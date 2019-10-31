@@ -1,0 +1,14 @@
+.page {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  width: 400px;
+  margin: 20px auto;
+  padding: 16px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: rgba(118, 143, 255, 0.1) 0px 16px 24px 0px;
+}

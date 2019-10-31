@@ -1,0 +1,1 @@
+export const AUTH_TOKEN = 'TEC_AUTH_TOKEN'

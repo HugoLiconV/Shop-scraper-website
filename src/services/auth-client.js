@@ -29,6 +29,18 @@ function login({ email, password }) {
   }).then(handleUserResponse);
 }
 
+function createAccount({ email, password, name }) {
+  return client("/users", {
+    method: "post",
+    data: {
+      access_token: process.env.REACT_APP_MASTER_KEY,
+      email,
+      password,
+      name
+    }
+  }).then(handleUserResponse);
+}
+
 function logout() {
   window.localStorage.removeItem(AUTH_TOKEN);
   return Promise.resolve();
@@ -38,4 +50,4 @@ function getToken() {
   return window.localStorage.getItem(AUTH_TOKEN);
 }
 
-export { login, logout, getToken, getUser };
+export { login, logout, getToken, getUser, createAccount };

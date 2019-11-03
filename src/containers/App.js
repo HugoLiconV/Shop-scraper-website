@@ -1,10 +1,11 @@
 import React from 'react'
-import {useUser} from './context/user-context'
-import { Icon } from "antd";
+import {useUser} from '../context/user-context'
+import Loading from '../components/Loading';
+import "./App.css"
 
-const loadAuthenticatedApp = () => import('./pages/AuthenticatedApp')
+const loadAuthenticatedApp = () => import('../pages/AuthenticatedApp')
 const AuthenticatedApp = React.lazy(loadAuthenticatedApp)
-const UnauthenticatedApp = React.lazy(() => import('./pages/Login'))
+const UnauthenticatedApp = React.lazy(() => import('./UnauthenticatedApp'))
 
 function App() {
   const user = useUser()
@@ -15,7 +16,7 @@ function App() {
   }, [])
 
   return (
-    <React.Suspense fallback={<Icon type="loading" spin={true} />}>
+    <React.Suspense fallback={<Loading title="Cargando página"/>}>
       {user ? <AuthenticatedApp user={user} /> : <UnauthenticatedApp />}
     </React.Suspense>
   );

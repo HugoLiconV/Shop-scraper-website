@@ -1,6 +1,33 @@
+:root {
+  --margin-bottom: 64px;
+  --hide-mobile: inline-block;
+  --show-mobile: none;
+  --icon-size: 16px;
+}
 .header {
   padding: 16px;
   background-color: white;
-  margin-bottom: 64px;
+  margin-bottom: var(--margin-bottom);
   box-shadow: rgba(118, 143, 255, 0.1) 0px 16px 24px 0px;
+}
+
+.icon {
+  font-size: var(--icon-size)!important;
+}
+
+.hide-mobile {
+  display: var(--hide-mobile);
+}
+
+.show-mobile {
+  display: var(--show-mobile);
+}
+
+@media (max-width: 767px) {
+  :root {
+    --margin-bottom: 32px;
+    --hide-mobile: none;
+    --show-mobile: inline-block;
+    --icon-size: 24px;
+  }
 }

@@ -1,37 +1,34 @@
 import React from "react";
-import { Layout, Menu, Icon } from "antd";
-import Header from "../components/Header";
-import { Router, Link, Match } from "@reach/router";
-import Profile from "./Profile";
-import AnnouncementForm from "./AnnouncementForm";
 import Home from "./Home";
-import AnnouncementDetail from "./AnnouncementDetail";
+import MainContainer from "../components/MainContainer";
+import NotFound from "./NotFound";
+import { Router } from "@reach/router";
 
-const { Footer, Content } = Layout;
+const loadProducts = () => import("../pages/Products");
+const loadProfile = () => import("../pages/Profile");
+const loadAbout = () => import("../pages/About");
+
+const ProductsLazy = React.lazy(loadProducts);
+const ProfileLazy = React.lazy(loadProfile);
+const AboutLazy = React.lazy(loadAbout);
 
 const AuthenticatedApp = ({ user }) => {
+  React.useEffect(() => {
+    loadProducts();
+    loadProfile();
+    loadAbout();
+  }, []);
+
   return (
-    <Layout
-      style={{
-        overflow: "auto",
-        height: "100vh",
-        width: "100%",
-        position: "fixed",
-        left: 0
-      }}
-    >
-      <Header />
-      <Router
-        style={{
-          padding: "0 64px 64px 64px"
-        }}
-      >
-        <Profile path="/profile" />
-        <AnnouncementDetail path="/announcements/:id" />
-        <AnnouncementForm path="/announcements" />
-        <Home path="/" />
+    <MainContainer user={user}>
+      <Router className="page-padding">
+        <Home path="/" user={user} />
+        <ProfileLazy path="/profile" user={user} />
+        <ProductsLazy path="/products" user={user} />
+        <AboutLazy path="/about" />
+        <NotFound default />
       </Router>
-    </Layout>
+    </MainContainer>
   );
 };
 

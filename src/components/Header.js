@@ -1,8 +1,7 @@
-import React from "react";
-import { Layout, Menu, Icon, Avatar, Dropdown, Typography } from "antd";
-import SubMenu from "antd/lib/menu/SubMenu";
+import React, { useState } from "react";
+import { Layout, Menu, Icon, Avatar, Dropdown, Drawer } from "antd";
 import { useAuth } from "../context/auth-context";
-import { Router, Link, Location } from "@reach/router";
+import { Link, Location } from "@reach/router";
 import "./Header.css";
 
 const NavLink = props => (
@@ -18,22 +17,15 @@ const NavLink = props => (
   />
 );
 
-const Header = props => {
-  const {
-    data: { user },
-    logout
-  } = useAuth();
-  // const currentRoute = props.location.pathname;
+const Header = ({ user }) => {
+  const [showDrawer, setShowDrawer] = useState(false);
+  const { logout } = useAuth();
 
-  function handleMenuClick(e) {
-    console.log("TCL: handleMenuClick -> e", e);
-  }
-
-  const menu = (
-    <Menu>
+  const dropDownMenu = (
+    <Menu style={{ border: "none" }}>
       <Menu.Item>
         <NavLink to="/profile">
-          <Icon type="smile" style={{marginRight: 8}}/>
+          <Icon type="smile" style={{ marginRight: 8 }} />
           <span>Perfil</span>
         </NavLink>
       </Menu.Item>
@@ -44,10 +36,24 @@ const Header = props => {
     </Menu>
   );
 
+  const renderLoginMenu = (location, mode = "horizontal") => (
+    <Menu
+      selectedKeys={[location.pathname]}
+      mode={mode}
+      style={{ border: "none" }}
+    >
+      <Menu.Item key="/login" style={{ border: "none" }}>
+        <NavLink to="/login">Iniciar sesión</NavLink>
+      </Menu.Item>
+      <Menu.Item key="/create-account" style={{ border: "none" }}>
+        <NavLink to="/create-account">Crear cuenta</NavLink>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <Location>
       {({ location }) => {
-      console.log("TCL: location", location)
         return (
           <Layout.Header
             className="header"
@@ -69,67 +75,78 @@ const Header = props => {
             >
               <Avatar
                 shape="square"
-                size={48}
-                src={require("../assets/img/bison.svg")}
+                size={40}
+                src={require("../assets/img/discount.svg")}
                 style={{ marginRight: 16 }}
               />
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  justifyContent: "center"
-                }}
-              >
-                <Typography.Title
-                  level={4}
-                  style={{ lineHeight: 1, margin: 0 }}
-                >
-                  Noti
-                </Typography.Title>
-                <Typography.Title
-                  level={4}
-                  style={{ lineHeight: 1, margin: 0 }}
-                >
-                  Tec
-                </Typography.Title>
-              </div>
             </Link>
             <Menu
-              onClick={handleMenuClick}
               selectedKeys={[location.pathname]}
               mode="horizontal"
-              style={{ borderBottom: "none" }}
+              style={{ border: "none" }}
             >
-              <Menu.Item key="/" style={{ borderBottom: "none" }}>
+              <Menu.Item key="/" style={{ border: "none" }}>
                 <NavLink to="/">
-                  <Icon type="read" />
-                  Noticias
+                  <Icon type="home" theme="filled" style={{ fontSize: 24 }} />
+                  <span className="hide-mobile">Inicio</span>
                 </NavLink>
               </Menu.Item>
-              <Menu.Item
-                key="/create-announcement"
-                style={{ borderBottom: "none" }}
-              >
-                <NavLink to="/create-announcement">
-                  <Icon type="plus" />
-                  Añadir
-                </NavLink>
-              </Menu.Item>
+              {user && (
+                <Menu.Item key="/products" style={{ border: "none" }}>
+                  <NavLink to="/products">
+                    <Icon
+                      type="shopping"
+                      theme="filled"
+                      style={{ fontSize: 24 }}
+                    />
+                    <span className="hide-mobile">Tus productos</span>
+                  </NavLink>
+                </Menu.Item>
+              )}
             </Menu>
             <div style={{ flex: 1 }} />
-            <Avatar
-              src={user && user.picture}
-              style={{ margin: "auto 10px" }}
+            <Icon
+              type="menu"
+              className="show-mobile"
+              style={{ fontSize: 24 }}
+              onClick={() => setShowDrawer(true)}
             />
-            <Dropdown overlay={menu}>
-              <span
-                className="ant-dropdown-link"
-                style={{ fontSize: 18, cursor: "pointer" }}
-              >
-                {(user && user.name) || ""} <Icon type="down" />
-              </span>
-            </Dropdown>
+            <Drawer
+              className="menu_drawer"
+              title={
+                user ? (
+                  <>
+                    <Avatar
+                      src={user && user.picture}
+                      style={{ margin: "auto 10px" }}
+                    />
+                    {(user && user.name) || ""}
+                  </>
+                ) : (
+                  "Pricer"
+                )
+              }
+              placement="right"
+              closable={false}
+              onClose={() => setShowDrawer(false)}
+              visible={showDrawer}
+            >
+              {user ? dropDownMenu : renderLoginMenu(location, "vertical")}
+            </Drawer>
+            <div className="hide-mobile">
+              <Avatar
+                src={user && user.picture}
+                style={{ margin: "auto 10px" }}
+              />
+              <Dropdown overlay={dropDownMenu}>
+                <span
+                  className="ant-dropdown-link"
+                  style={{ fontSize: 18, cursor: "pointer" }}
+                >
+                  {(user && user.name) || ""} <Icon type="down" />
+                </span>
+              </Dropdown>
+            </div>
           </Layout.Header>
         );
       }}

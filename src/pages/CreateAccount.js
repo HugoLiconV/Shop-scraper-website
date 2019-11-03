@@ -1,45 +1,32 @@
 import React, { useState } from "react";
-import { Typography, Avatar, message } from "antd";
-import { Form, Icon, Input, Button } from "antd";
+import { Avatar, Typography, Form, Input, Icon, Button } from "antd";
 import { Link } from "@reach/router";
-import { useAuth } from "../context/auth-context";
 import "./Login.css";
 import ErrorMessage from "../components/ErrorMessage";
 import HCenter from "../components/Layouts/HCenter";
+import { useAuth } from "../context/auth-context";
 
 const { Title } = Typography;
-const loadCreateAccount = () => import("../pages/CreateAccount");
 
-const Login = function({ form }) {
+const CreateAccount = ({ form }) => {
+  const { createAccount } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState()
-  const { login } = useAuth();
   const { getFieldDecorator } = form;
-
-  React.useEffect(() => {
-    // pre-load the authenticated side in the background while the user's
-    // filling out the login form.
-    loadCreateAccount();
-  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
-    form.validateFields(async (err, { email, password }) => {
+    form.validateFields(async (err, { email, password, name }) => {
       if (!err) {
-        setLoading(true);
-        await login({
+        setLoading(true)
+        await createAccount({
           email,
-          password
+          password,
+          name
         }).catch(e => {
-        console.log("TCL: handleSubmit -> e", JSON.stringify(e, null, 2));
-          setLoading(false)
-          if (e && e.response && e.response.status === 401) {
-            message.error("Datos incorrectos. Vuelve a intentarlo");
-          } else {
-            message.error("Error en el servidor. Vuelve a intentarlo luego.");
-            setError(e)
-          }
-        });
+          setError(e.message)
+        })
+        setLoading(false)
       }
     });
   }
@@ -80,7 +67,6 @@ const Login = function({ form }) {
                   <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
                 }
                 placeholder="Email"
-                autoComplete="username"
               />
             )}
           </Form.Item>
@@ -99,10 +85,14 @@ const Login = function({ form }) {
                   <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
                 }
                 type="password"
-                autoComplete="current-password"
                 placeholder="Contraseña"
               />
             )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator("name", {
+              rules: [{ required: true, message: "Introduce tu nombre" }]
+            })(<Input placeholder="Nombre" />)}
           </Form.Item>
           <Form.Item>
             <Button
@@ -113,11 +103,10 @@ const Login = function({ form }) {
               htmlType="submit"
               className="login-form-button"
             >
-              Iniciar sesión
+              Crear cuenta
             </Button>
-            {/* Load create account component only if needed */}
             <HCenter>
-              <Link to="/create-account">Crear Cuenta</Link>
+              <Link to="/login">Iniciar sesión</Link>
             </HCenter>
           </Form.Item>
           <ErrorMessage error={error} />
@@ -127,4 +116,4 @@ const Login = function({ form }) {
   );
 };
 
-export default Form.create({ name: "login" })(Login);
+export default Form.create({ name: "login" })(CreateAccount);

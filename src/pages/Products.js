@@ -34,7 +34,10 @@ const Products = () => {
     run: runGetProducts
   } = useAsync({
     promiseFn: getTrackedProducts,
-    deferFn: getTrackedProducts
+    deferFn: getTrackedProducts,
+
+    limit: 10,
+    page: 1
   });
   const {
     isPending: isRemovePending,
@@ -61,7 +64,6 @@ const Products = () => {
     page: 1,
     total
   };
-
   function onResolveUpdate() {
     message.success("Producto actualizado con éxito");
     setShowDrawer(false);

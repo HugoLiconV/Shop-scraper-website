@@ -15,12 +15,11 @@ export async function searchProduct(values) {
   return res.data;
 }
 
-export async function getTrackedProducts(values) {
+export async function getTrackedProducts({ limit, page, ...values }) {
+  console.log("TCL: getTrackedProducts -> values", values);
   const params = (values && values[0]) || {};
-  const limit = params.limit || 1;
-  const page = params.page || 1;
   const res = await client(
-    `/tracked-products?limit=${limit}&page=${page}`
+    `/tracked-products?limit=${params.limit || limit}&page=${params.page || page}`
   ).catch(e => {
     return Promise.reject(e);
   });

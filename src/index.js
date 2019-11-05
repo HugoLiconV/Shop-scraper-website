@@ -14,6 +14,11 @@ Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DNS
 });
 
+if (process.env.NODE_ENV !== "production") {
+  const whyDidYouRender = require("@welldone-software/why-did-you-render");
+  whyDidYouRender(React);
+}
+
 ReactDOM.render(
   <AppProviders>
     <App />

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Form, Input, Icon, Select, Button, Typography } from "antd";
+import { Form, Input, Icon, Button, Typography } from "antd";
 import HCenter from "./Layouts/HCenter";
-import { STORES } from "../constants";
-import ErrorMessage from "./ErrorMessage";
 
 const SearchProduct = ({ form, onSearch, loading }) => {
   const { getFieldDecorator } = form;
@@ -51,19 +49,6 @@ const SearchProduct = ({ form, onSearch, loading }) => {
   return (
     <Form onSubmit={handleSubmit} className="login-form">
       <Typography.Title level={3}>Buscar producto</Typography.Title>
-      {/* <Form.Item label="Tienda">
-        {getFieldDecorator("store", {
-          rules: [{ required: true, message: "Selecciona la tienda" }]
-        })(
-          <Select placeholder="Selecciona la tienda en la que buscas el producto">
-            {STORES.map(({ value, name }) => (
-              <Select.Option key={value} value={value}>
-                {name}
-              </Select.Option>
-            ))}
-          </Select>
-        )}
-      </Form.Item> */}
       <Form.Item>
         {getFieldDecorator("link", {
           rules: [{ required: true, message: "Introduce la URL del producto" }]

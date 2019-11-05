@@ -17,6 +17,8 @@ import {
   updateProduct
 } from "../services/productClient";
 import ErrorMessage from "../components/ErrorMessage";
+import ErrorBoundary from "./ErrorBoundary";
+import ProductTable from "../components/ProductTable";
 
 const Products = () => {
   const [showDrawer, setShowDrawer] = useState(false);
@@ -28,9 +30,11 @@ const Products = () => {
     data,
     isPending: isGetProductsPending,
     error: getProductsError,
-    reload: reloadProducts
+    reload: reloadProducts,
+    run: runGetProducts
   } = useAsync({
-    promiseFn: getTrackedProducts
+    promiseFn: getTrackedProducts,
+    deferFn: getTrackedProducts
   });
   const {
     isPending: isRemovePending,
@@ -51,6 +55,12 @@ const Products = () => {
   });
 
   const products = (data && data.products) || [];
+  const total = (data && data.count) || 0;
+  const pagination = {
+    limit: 10,
+    page: 1,
+    total
+  };
 
   function onResolveUpdate() {
     message.success("Producto actualizado con éxito");
@@ -81,75 +91,92 @@ const Products = () => {
     setDesiredPrice(item.desiredPrice);
   }
 
+  function onPaginationChange(page) {
+    runGetProducts({ page });
+  }
+
   return (
-    <CardContainer>
-      <Typography.Title>Productos</Typography.Title>
-      <Radio.Group
-        defaultValue={visualization}
-        onChange={onVisualizationChange}
-        buttonStyle="solid"
-      >
-        <Radio.Button value="list">
-          <Icon type="unordered-list" /> Lista
-        </Radio.Button>
-        <Radio.Button value="table">
-          <Icon type="table" /> Tabla
-        </Radio.Button>
-      </Radio.Group>
-      <ErrorMessage error={getProductsError || removeError || updateError} />
-      {visualization === "list" ? (
-        <ProductList
-          onRemove={onRemoveProduct}
-          list={products}
-          onEditClick={showEditDrawer}
-          loading={isGetProductsPending || isRemovePending}
-        />
-      ) : null}
-      <Drawer
-        title={`Actualizar ${
-          item && item.product && item.product.title
-            ? item.product.title
-            : "producto"
-        }`}
-        placement="bottom"
-        closable={false}
-        onClose={onDrawerClose}
-        visible={showDrawer}
-      >
-        <InputNumber
-          defaultValue={1000}
-          max={(item && item.product && item.product.price - 1) || 0}
-          min={0}
-          step={Math.round(
-            (item && item.product && item.product.price * 0.05) || 0
-          )}
-          formatter={value =>
-            `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-          }
-          placeholder="Precio deseado"
-          parser={value => value.replace(/\$\s?|(,*)/g, "")}
-          onChange={setDesiredPrice}
-          value={desiredPrice}
-          style={{ marginBottom: 16, marginRight: 16 }}
-        />
-        <br />
-        <Button
-          type="primary"
-          onClick={() =>
-            runUpdateProduct({
-              id: item.id,
-              data: {
-                ...item,
-                desiredPrice
-              }
-            })
-          }
-          loading={isUpdatePending}
+    <ErrorBoundary>
+      <CardContainer>
+        <Typography.Title>Productos</Typography.Title>
+        <Radio.Group
+          defaultValue={visualization}
+          onChange={onVisualizationChange}
+          buttonStyle="solid"
         >
-          Actualizar
-        </Button>
-      </Drawer>
-    </CardContainer>
+          <Radio.Button value="list">
+            <Icon type="unordered-list" /> Lista
+          </Radio.Button>
+          <Radio.Button value="table">
+            <Icon type="table" /> Tabla
+          </Radio.Button>
+        </Radio.Group>
+        <ErrorMessage error={getProductsError || removeError || updateError} />
+        {visualization === "list" ? (
+          <ProductList
+            onRemove={onRemoveProduct}
+            list={products}
+            pagination={pagination}
+            onUpdate={showEditDrawer}
+            onPaginationChange={onPaginationChange}
+            loading={isGetProductsPending || isRemovePending || isUpdatePending}
+          />
+        ) : (
+          <ProductTable
+            onRemove={onRemoveProduct}
+            list={products}
+            onUpdate={showEditDrawer}
+            onPaginationChange={onPaginationChange}
+            pagination={pagination}
+            loading={isUpdatePending || isGetProductsPending || isRemovePending}
+          />
+        )}
+        <Drawer
+          title={`Actualizar ${
+            item && item.product && item.product.title
+              ? item.product.title
+              : "producto"
+          }`}
+          placement="bottom"
+          closable={false}
+          onClose={onDrawerClose}
+          visible={showDrawer}
+        >
+          <InputNumber
+            defaultValue={1000}
+            max={(item && item.product && item.product.price - 1) || 0}
+            min={0}
+            step={Math.round(
+              (item && item.product && item.product.price * 0.05) || 0
+            )}
+            formatter={value =>
+              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            placeholder="Precio deseado"
+            parser={value => value.replace(/\$\s?|(,*)/g, "")}
+            onChange={setDesiredPrice}
+            value={desiredPrice}
+            style={{ marginBottom: 16, marginRight: 16 }}
+          />
+          <br />
+          <Button
+            type="primary"
+            onClick={() =>
+              runUpdateProduct({
+                id: item.id,
+                data: {
+                  ...item,
+                  desiredPrice
+                }
+              })
+            }
+            loading={isUpdatePending}
+          >
+            Actualizar
+          </Button>
+        </Drawer>
+      </CardContainer>
+    </ErrorBoundary>
   );
 };
 

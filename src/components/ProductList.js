@@ -9,10 +9,23 @@ import {
 } from "antd";
 import { formatter } from "../utils/priceFormatter";
 
-const ProductList = ({ list, loading, onRemove, onEditClick }) => {
+const ProductList = ({
+  list,
+  loading,
+  onRemove,
+  onUpdate,
+  onPaginationChange,
+  pagination
+}) => {
   return (
     <List
       loading={loading}
+      pagination={{
+        position: "bottom",
+        total: pagination.total,
+        pageSize: pagination.limit,
+        onChange: onPaginationChange
+      }}
       itemLayout="vertical"
       dataSource={list}
       renderItem={item => {
@@ -30,7 +43,7 @@ const ProductList = ({ list, loading, onRemove, onEditClick }) => {
                 type="edit"
                 theme="twoTone"
                 twoToneColor="#52c41a"
-                onClick={() => onEditClick(item)}
+                onClick={() => onUpdate(item)}
               />,
               <Popconfirm
                 title="¿Seguro de que quieres eliminar este producto?"

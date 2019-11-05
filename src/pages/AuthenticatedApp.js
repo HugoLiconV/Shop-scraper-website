@@ -3,6 +3,7 @@ import Home from "./Home";
 import MainContainer from "../components/MainContainer";
 import NotFound from "./NotFound";
 import { Router } from "@reach/router";
+import ErrorBoundary from "./ErrorBoundary";
 
 const loadProducts = () => import("../pages/Products");
 const loadProfile = () => import("../pages/Profile");
@@ -21,7 +22,7 @@ const AuthenticatedApp = ({ user }) => {
 
   return (
     <MainContainer user={user}>
-      <Router className="page-padding">
+      <Router>
         <Home path="/" user={user} />
         <ProfileLazy path="/profile" user={user} />
         <ProductsLazy path="/products" user={user} />

@@ -7,6 +7,8 @@ import HCenter from "../components/Layouts/HCenter";
 import { searchProduct, addProduct } from "../services/productClient";
 import { useAsync } from "react-async";
 import ErrorMessage from "../components/ErrorMessage";
+import ErrorBoundary from "./ErrorBoundary";
+import SentryButton from "../components/SentryButton";
 
 const Home = ({ user }) => {
   const {
@@ -24,12 +26,13 @@ const Home = ({ user }) => {
     run: runAddProduct
   } = useAsync({
     deferFn: addProduct,
-    onResolve: () => message.success(`${product.title} agregado a tus productos`)
+    onResolve: () =>
+      message.success(`${product.title} agregado a tus productos`)
   });
 
   const product = searchData && searchData.product;
 
-  // We don't use these variables to render anything so we don't need to use useState 
+  // We don't use these variables to render anything so we don't need to use useState
 
   async function onProductSearch(values) {
     runSearchProduct(values);
@@ -40,33 +43,50 @@ const Home = ({ user }) => {
       message.error("Necesitas iniciar sesión para poder agregar productos");
       return;
     }
-    runAddProduct({ desiredPrice, product: {...product, } });
+    runAddProduct({ desiredPrice, product: { ...product } });
   }
 
   return (
-    <>
-      <Typography.Title level={1}>Pricer</Typography.Title>
+    <ErrorBoundary>
       <Row gutter={20}>
-        <Col sm={24} md={{ span: 10, offset: 7 }}>
+        <Col sm={24} lg={{ span: 10, offset: 7 }}>
+          <CardContainer>
+            <Typography.Title level={1}>Pricer</Typography.Title>
+            <Typography.Paragraph>
+              Pricer te permite recibir alertas cuando un producto baja de
+              precio por un valor que tu estableciste. Actualmente tiene soporte
+              para: Amazon, Best Buy, Coppel, Costco, Cyber Puerta, DD Tech,
+              Liverpool y Sears.
+            </Typography.Paragraph>
+            <SentryButton
+              message="[store request]"
+              tags={["store request"]}
+              title="Solicitar soporte de tienda"
+            />
+          </CardContainer>
+        </Col>
+        <Col sm={24} lg={{ span: 10, offset: 7 }}>
           <CardContainer>
             <SearchProduct
               onSearch={onProductSearch}
               loading={isSearchPending}
             />
             <HCenter>
-              {product && !isSearchPending && (
+              {product && !searchError && !isSearchPending && (
                 <ProductResult
                   product={product}
                   addProduct={onAddProduct}
                   loading={isAddingPending}
                 />
               )}
-              <ErrorMessage error={searchError || addingError} />
+              {!isSearchPending && !isAddingPending && (
+                <ErrorMessage error={searchError || addingError} />
+              )}
             </HCenter>
           </CardContainer>
         </Col>
       </Row>
-    </>
+    </ErrorBoundary>
   );
 };
 

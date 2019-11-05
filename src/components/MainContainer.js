@@ -1,7 +1,9 @@
 import React from "react";
-import { Layout } from "antd";
+import { Layout, Button } from "antd";
 import Header from "./Header";
 import { Link } from "@reach/router";
+import * as Sentry from "@sentry/browser";
+import SentryButton from "./SentryButton";
 
 const MainContainer = props => {
   return (
@@ -15,9 +17,12 @@ const MainContainer = props => {
       }}
     >
       <Header user={props.user} />
-      <div style={{marginBottom: 50}}>{props.children}</div>
+      <div style={{ marginBottom: 50 }} className="page-padding">
+        {props.children}
+      </div>
       <Layout.Footer className="footer">
         <Link to="/about">Acerca de</Link>
+        <SentryButton message="[user feedback]" title="Reportar problema" tags={['user feedback']}/>
       </Layout.Footer>
     </Layout>
   );

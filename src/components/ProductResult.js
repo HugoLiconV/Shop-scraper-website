@@ -8,8 +8,13 @@ const ProductResult = ({ product, addProduct, loading }) => {
 
   return (
     <Card
-      style={{ maxWidth: 400 }}
-      cover={<img alt={product.title} src={product.image} />}
+      style={{ maxWidth: 400, width: '100%' }}
+      cover={
+        <img
+          alt={product.title}
+          src={product.image || require("../assets/img/No-image-found.jpg")}
+        />
+      }
       actions={[
         <Button
           onClick={() => {

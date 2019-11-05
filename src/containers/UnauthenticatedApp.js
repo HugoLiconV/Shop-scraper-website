@@ -20,7 +20,7 @@ const UnauthenticatedApp = () => {
 
   return (
     <MainContainer>
-      <Router className="page-padding">
+      <Router>
         <LoginLazy path="/login" />
         <CreateAccountLazy path="/create-account" />
         <AboutLazy path="/about" />

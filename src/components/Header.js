@@ -134,18 +134,24 @@ const Header = ({ user }) => {
               {user ? dropDownMenu : renderLoginMenu(location, "vertical")}
             </Drawer>
             <div className="hide-mobile">
-              <Avatar
-                src={user && user.picture}
-                style={{ margin: "auto 10px" }}
-              />
-              <Dropdown overlay={dropDownMenu}>
-                <span
-                  className="ant-dropdown-link"
-                  style={{ fontSize: 18, cursor: "pointer" }}
-                >
-                  {(user && user.name) || ""} <Icon type="down" />
-                </span>
-              </Dropdown>
+              {user ? (
+                <>
+                  <Avatar
+                    src={user && user.picture}
+                    style={{ margin: "auto 10px" }}
+                  />
+                  <Dropdown overlay={dropDownMenu}>
+                    <span
+                      className="ant-dropdown-link"
+                      style={{ fontSize: 18, cursor: "pointer" }}
+                    >
+                      {(user && user.name) || ""} <Icon type="down" />
+                    </span>
+                  </Dropdown>
+                </>
+              ) : (
+                renderLoginMenu(location, "horizontal")
+              )}
             </div>
           </Layout.Header>
         );

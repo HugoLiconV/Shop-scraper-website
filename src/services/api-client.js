@@ -6,7 +6,6 @@ axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.interceptors.request.use(
   async config => {
     const token = await window.localStorage.getItem(AUTH_TOKEN);
-    console.log("TCL: token", token)
     if (token && !config.headers.Authorization) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -18,7 +17,7 @@ axios.interceptors.request.use(
 );
 
 function client(endpoint, { method = "get", data, options } = {}) {
-  return axios[method](endpoint, data, options);
+  return axios[method](endpoint, data, options)
 }
 
 export default client;

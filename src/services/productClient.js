@@ -7,9 +7,6 @@ export async function searchProduct(values) {
       params.store
     }`
   ).catch(error => {
-    console.log(JSON.stringify(error, null, 2));
-    console.log(error.response.data.message);
-    console.log(error.message);
     return Promise.reject(
       (error && error.response && error.response.data && error.response.data) ||
         error

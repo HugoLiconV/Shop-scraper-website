@@ -7,15 +7,18 @@ import NotFound from "../pages/NotFound";
 const loadCreateAccount = () => import("../pages/CreateAccount");
 const loadLogin = () => import("../pages/Login");
 const loadAbout = () => import("../pages/About");
+const loadNotFound = () => import("../pages/NotFound");
 const CreateAccountLazy = React.lazy(loadCreateAccount);
 const LoginLazy = React.lazy(loadLogin);
 const AboutLazy = React.lazy(loadAbout);
+const NotFoundLazy = React.lazy(loadNotFound);
 
 const UnauthenticatedApp = () => {
   React.useEffect(() => {
     loadCreateAccount();
     loadLogin();
     loadAbout();
+    loadNotFound();
   }, []);
 
   return (
@@ -25,7 +28,7 @@ const UnauthenticatedApp = () => {
         <CreateAccountLazy path="/create-account" />
         <AboutLazy path="/about" />
         <Home path="/" />
-        <NotFound default />
+        <NotFoundLazy default />
       </Router>
     </MainContainer>
   );

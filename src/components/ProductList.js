@@ -15,7 +15,8 @@ const ProductList = ({
   onRemove,
   onUpdate,
   onPaginationChange,
-  pagination
+  pagination,
+  markAsBought
 }) => {
   return (
     <List
@@ -50,7 +51,16 @@ const ProductList = ({
                 onConfirm={() => onRemove(item.id)}
               >
                 <Icon type="delete" theme="twoTone" twoToneColor="#eb2f96" />
-              </Popconfirm>
+              </Popconfirm>,
+              <div onClick={() => markAsBought(item)}>
+                <Icon
+                  type="check-circle"
+                  theme="twoTone"
+                  twoToneColor="#52c41a"
+                  style={{ marginRight: 8 }}
+                />
+                Marcar como comprado
+              </div>
             ]}
           >
             <Skeleton avatar title={false} loading={item.loading} active>

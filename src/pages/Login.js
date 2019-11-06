@@ -32,7 +32,6 @@ const Login = function({ form }) {
           email,
           password
         }).catch(e => {
-          console.log("TCL: handleSubmit -> e", JSON.stringify(e, null, 2));
           setLoading(false);
           if (e && e.response && e.response.status === 401) {
             message.error("Datos incorrectos. Vuelve a intentarlo");

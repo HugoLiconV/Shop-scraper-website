@@ -8,7 +8,6 @@ export async function me() {
 }
 
 export async function updateUser(values) {
-  console.log("TCL: updateUser -> values", values)
   const {id, ...data} = values && values[0];
   const res = await client(`users/${id}`, {
     method: "put",

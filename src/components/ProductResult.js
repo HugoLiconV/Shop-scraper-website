@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Typography, Card, Icon, InputNumber, Row, Col, Button } from "antd";
 import { formatter } from "../utils/priceFormatter";
 import Meta from "antd/lib/card/Meta";
+import SentryButton from "./SentryButton";
 
 const ProductResult = ({ product, addProduct, loading }) => {
   const [desiredPrice, setDesiredPrice] = useState(product.price);
@@ -58,6 +59,7 @@ const ProductResult = ({ product, addProduct, loading }) => {
           </div>
         }
       />
+      <SentryButton title="¿Algún problema con tu producto?" message={product.link} tags={['product-error']}/>
     </Card>
   );
 };

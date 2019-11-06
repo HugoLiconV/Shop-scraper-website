@@ -18,8 +18,6 @@ const ErrorStyles = styled.div`
 `;
 
 const ErrorMessage = ({ error }) => {
-  // console.log("TCL: ErrorMessage -> error", error)
-  // console.log("TCL: ErrorMessage -> error", JSON.stringify(error, null, 2))
   if (!error || !error.message) return null;
   return (
     <ErrorStyles>

@@ -10,7 +10,7 @@ const SentryButton = ({title, message, tags}) => {
       onClick={() => {
         const eventId = Sentry.captureEvent({
           message,
-          tags
+          tags,
         });
         Sentry.showReportDialog({
           eventId: eventId,

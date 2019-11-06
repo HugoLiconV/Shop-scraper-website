@@ -63,6 +63,8 @@ workflows:
     jobs:
       - prepare
       - build
+          requires:
+            - prepare
       - test:
           requires:
             - build

@@ -8,6 +8,7 @@ import {
   Button,
   message
 } from "antd";
+import { Link } from "@reach/router";
 import CardContainer from "../components/CardContainer";
 import ProductList from "../components/ProductList";
 import { useAsync } from "react-async";
@@ -35,7 +36,6 @@ const Products = () => {
   } = useAsync({
     promiseFn: getTrackedProducts,
     deferFn: getTrackedProducts,
-
     limit: 10,
     page: 1
   });
@@ -94,25 +94,42 @@ const Products = () => {
   }
 
   function onPaginationChange(page) {
-    runGetProducts({ page });
+    pagination.page = page;
+    runGetProducts(pagination);
+  }
+
+  function markProductAsBought(item) {
+    runUpdateProduct({
+      id: item.id,
+      data: {
+        ...item,
+        wasPurchased: true,
+        purchasedAt: item.product.price,
+        notify: false // the user stop getting notifications
+      }
+    });
   }
 
   return (
     <ErrorBoundary>
       <CardContainer>
         <Typography.Title>Productos</Typography.Title>
-        <Radio.Group
-          defaultValue={visualization}
-          onChange={onVisualizationChange}
-          buttonStyle="solid"
-        >
-          <Radio.Button value="list">
-            <Icon type="unordered-list" /> Lista
-          </Radio.Button>
-          <Radio.Button value="table">
-            <Icon type="table" /> Tabla
-          </Radio.Button>
-        </Radio.Group>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+          <Radio.Group
+            defaultValue={visualization}
+            onChange={onVisualizationChange}
+            buttonStyle="solid"
+          >
+            <Radio.Button value="list">
+              <Icon type="unordered-list" /> Lista
+            </Radio.Button>
+            <Radio.Button value="table">
+              <Icon type="table" /> Tabla
+            </Radio.Button>
+          </Radio.Group>
+          <div style={{flex: 1}}/>
+          <Link to="/purchased-products">Ir a productos comprados</Link>
+        </div>
         <ErrorMessage error={getProductsError || removeError || updateError} />
         {visualization === "list" ? (
           <ProductList
@@ -122,6 +139,7 @@ const Products = () => {
             onUpdate={showEditDrawer}
             onPaginationChange={onPaginationChange}
             loading={isGetProductsPending || isRemovePending || isUpdatePending}
+            markAsBought={markProductAsBought}
           />
         ) : (
           <ProductTable

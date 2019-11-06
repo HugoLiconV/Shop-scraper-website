@@ -16,10 +16,19 @@ export async function searchProduct(values) {
 }
 
 export async function getTrackedProducts({ limit, page, ...values }) {
-  console.log("TCL: getTrackedProducts -> values", values);
   const params = (values && values[0]) || {};
   const res = await client(
     `/tracked-products?limit=${params.limit || limit}&page=${params.page || page}`
+  ).catch(e => {
+    return Promise.reject(e);
+  });
+  return res.data;
+}
+
+export async function getPurchasedProducts({ limit, page, ...values }) {
+  const params = (values && values[0]) || {};
+  const res = await client(
+    `/tracked-products?wasPurchased=true&limit=${params.limit || limit}&page=${params.page || page}`
   ).catch(e => {
     return Promise.reject(e);
   });

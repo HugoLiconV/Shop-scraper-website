@@ -1,7 +1,6 @@
 import React from "react";
 import Home from "./Home";
 import MainContainer from "../components/MainContainer";
-import NotFound from "./NotFound";
 import { Router } from "@reach/router";
 
 const loadProducts = () => import("../pages/Products");

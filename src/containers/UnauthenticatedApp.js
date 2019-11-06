@@ -2,7 +2,6 @@ import React from "react";
 import MainContainer from "../components/MainContainer";
 import Home from "../pages/Home";
 import { Router } from "@reach/router";
-import NotFound from "../pages/NotFound";
 
 const loadCreateAccount = () => import("../pages/CreateAccount");
 const loadLogin = () => import("../pages/Login");

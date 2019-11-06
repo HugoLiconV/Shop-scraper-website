@@ -1,8 +1,7 @@
 import React from "react";
-import { Layout, Button } from "antd";
+import { Layout } from "antd";
 import Header from "./Header";
 import { Link } from "@reach/router";
-import * as Sentry from "@sentry/browser";
 import SentryButton from "./SentryButton";
 
 const MainContainer = props => {

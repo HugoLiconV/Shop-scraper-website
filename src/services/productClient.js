@@ -25,10 +25,9 @@ export async function getTrackedProducts({ limit, page, ...values }) {
   return res.data;
 }
 
-export async function getPurchasedProducts({ limit, page, ...values }) {
-  const params = (values && values[0]) || {};
+export async function getPurchasedProducts() {
   const res = await client(
-    `/tracked-products?wasPurchased=true&limit=${params.limit || limit}&page=${params.page || page}`
+    `/tracked-products?wasPurchased=true`
   ).catch(e => {
     return Promise.reject(e);
   });

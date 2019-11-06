@@ -5,26 +5,15 @@ import { formatter } from '../utils/priceFormatter';
 const PurchasedProductsList = ({
   loading,
   list,
-  pagination,
-  onPaginationChange
 }) => {
   return (
     <List
       loading={loading}
-      pagination={{
-        position: "bottom",
-        total: pagination.total,
-        pageSize: pagination.limit,
-        onChange: onPaginationChange
-      }}
+      pagination={false}
       itemLayout="vertical"
       dataSource={list}
       renderItem={item => {
         const difference = item.initialPrice - item.purchasedAt;
-        console.log("TCL: item", item.title)
-        console.log("TCL: item.purchasedAt", item.purchasedAt)
-        console.log("TCL: item.initialPrice", item.initialPrice)
-        console.log("TCL: difference", difference)
         const negativeIcon = (
           <Icon type="caret-down" style={{ color: "#eb2f96" }} />
         );

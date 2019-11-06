@@ -16,22 +16,11 @@ const PurchasedProducts = () => {
   } = useAsync({
     promiseFn: getPurchasedProducts,
     deferFn: getPurchasedProducts,
-    limit: 10,
-    page: 1
   });
 
   const products = (data && data.products) || [];
   const total = (data && data.count) || 0;
-  const pagination = {
-    limit: 10,
-    page: 1,
-    total
-  };
 
-  function onPaginationChange(page) {
-    pagination.page = page;
-    runGetProducts(pagination);
-  }
 
   const getSavings = React.useMemo(() => {
     return products.reduce(
@@ -65,10 +54,8 @@ const PurchasedProducts = () => {
         </Row>
         <Divider />
         <PurchasedProductsList
-          pagination={pagination}
           list={products}
           loading={isGetProductsPending}
-          onPaginationChange={onPaginationChange}
         />
         <ErrorMessage error={getProductsError} />
       </CardContainer>

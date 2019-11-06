@@ -40,4 +40,20 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyA4Q_NMJ_Rrzt3SCg59jWDvVsJdhly3zIM",
+      authDomain: "shop-scraper.firebaseapp.com",
+      databaseURL: "https://shop-scraper.firebaseio.com",
+      projectId: "shop-scraper",
+      storageBucket: "shop-scraper.appspot.com",
+      messagingSenderId: "82534279578",
+      appId: "1:82534279578:web:6d24ff5554cc8ff2a23223"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
 </html>

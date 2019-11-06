@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "babel-plugin-import": "^1.12.2",
+    "firebase-tools": "^7.6.2",
     "webpack-ant-icon-loader": "^1.0.8"
   }
 }

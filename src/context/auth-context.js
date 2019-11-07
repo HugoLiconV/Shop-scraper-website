@@ -4,6 +4,7 @@ import * as authClient from "../services/auth-client";
 import { bootstrapAppData } from "../services/bootstrapAppData";
 import Loading from "../components/Loading";
 import { navigate } from "@reach/router";
+import ErrorMessage from "../components/ErrorMessage";
 
 const AuthContext = React.createContext();
 
@@ -23,10 +24,7 @@ function AuthProvider(props) {
   }
   if (isRejected) {
     return (
-      <div css={{ color: "red" }}>
-        <p>Uh oh... There's a problem. Try refreshing the app.</p>
-        <pre>{error.message}</pre>
-      </div>
+      <ErrorMessage error={error} />
     );
   }
 

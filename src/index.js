@@ -11,7 +11,8 @@ import "dayjs/locale/es"; // load on demand
 
 dayjs.locale("es"); // use Spanish locale globally
 Sentry.init({
-  dsn: process.env.REACT_APP_SENTRY_DNS
+  dsn: process.env.REACT_APP_SENTRY_DNS,
+  environment: process.env.NODE_ENV
 });
 
 if (process.env.NODE_ENV !== "production") {

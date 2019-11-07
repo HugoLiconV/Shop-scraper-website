@@ -11,11 +11,9 @@ const PurchasedProducts = () => {
   const {
     data,
     isPending: isGetProductsPending,
-    error: getProductsError,
-    run: runGetProducts
+    error: getProductsError
   } = useAsync({
     promiseFn: getPurchasedProducts,
-    deferFn: getPurchasedProducts,
   });
 
   const products = (data && data.products) || [];

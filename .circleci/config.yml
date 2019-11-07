@@ -1,73 +1,26 @@
-defaults: &defaults
-  docker:
-    - image: circleci/node:8
-
 version: 2
 jobs:
-  prepare:
-    <<: *defaults
-    steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - persist_to_workspace:
-          root: .
-          paths:
-            - node_modules
-  build:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - run: npm run build
-      - persist_to_workspace:
-          root: .
-          paths:
-            - build
-  test:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - run: npm run test
-  deploy-firebase:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - deploy:
-          name: 'Deploy to Firebase Hosting'
-          command: |
-            if [ ! -d "build" ]
-              then
-                echo "build folder not found"
-                exit 1
-              fi
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              './node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN' --non-interactive
-              echo "Deployed to Firebase 🤓"
-            fi
-workflows:
-  version: 2
-  build-test-and-deploy:
-    jobs:
-      - prepare
-      - build:
-          requires:
-            - prepare
-      - test:
-          requires:
-            - build
-      - deploy-firebase:
-          requires:
-            - test
+    build:
+        docker:
+            - image: circleci/node:10.16.0
+        working_directory: ~/repo
+        steps:
+            - checkout
+            # Download and cache dependencies
+            - restore_cache:
+                  keys:
+                      - v1-dependencies-{{ checksum "package.json" }}
+                      - v1-dependencies-
+            - run:
+                  name: Install Dependencies
+                  command: npm install
+            - save_cache:
+                  key: v1-npm-deps-{{ checksum "package-lock.json" }}
+                  paths:
+                      - ./node_modules
+            - run:
+                  name: Build
+                  command: npm build
+            - run:
+                  name: Firebase Deploy
+                  command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --only hosting

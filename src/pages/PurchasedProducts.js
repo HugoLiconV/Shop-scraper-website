@@ -47,8 +47,7 @@ const PurchasedProducts = () => {
               value={getSavings}
               precision={2}
               valueStyle={{ color: getSavings > 0 ? "#52c41a" : "#eb2f96" }}
-              prefix={<Icon type={`caret-${getSavings > 0 ? 'up' : 'down'}`} />}
-              suffix="$"
+              prefix={<span><Icon type={`caret-${getSavings > 0 ? 'up' : 'down'}`} />$</span>}
             />
           </Col>
         </Row>

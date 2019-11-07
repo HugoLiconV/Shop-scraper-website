@@ -5,7 +5,8 @@ import {
   Avatar,
   Typography,
   Icon,
-  Popconfirm
+  Popconfirm,
+  Tag
 } from "antd";
 import { formatter } from "../utils/priceFormatter";
 
@@ -30,6 +31,7 @@ const ProductList = ({
       itemLayout="vertical"
       dataSource={list}
       renderItem={item => {
+        const src = item.product.image || require("../assets/img/No-image-found.jpg");
         const difference = item.product.price - item.desiredPrice;
         const negativeIcon = (
           <Icon type="caret-up" style={{ color: "#eb2f96" }} />
@@ -81,13 +83,14 @@ const ProductList = ({
                       <br />
                       Precio deseado: {formatter.format(item.desiredPrice)}
                     </Typography.Paragraph>
+                    <Tag color="blue">{item.product.store}</Tag>
                   </>
                 }
                 avatar={
                   <Avatar
                     shape="square"
                     size="large"
-                    src={item.product.image}
+                    src={src}
                     alt={item.product.title}
                   />
                 }

@@ -59,11 +59,11 @@ const Products = () => {
 
   const products = (data && data.products) || [];
   const total = (data && data.count) || 0;
-  const pagination = {
+  const [pagination, setPagination] = useState({
     limit: 10,
     page: 1,
     total
-  };
+  })
   function onResolveUpdate() {
     message.success("Producto actualizado con éxito");
     setShowDrawer(false);
@@ -94,7 +94,8 @@ const Products = () => {
   }
 
   function onPaginationChange(page) {
-    pagination.page = page;
+    if(page === pagination.page) return 
+    setPagination({...pagination, page})
     runGetProducts(pagination);
   }
 

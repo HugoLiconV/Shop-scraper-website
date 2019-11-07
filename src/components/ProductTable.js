@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Icon, Divider, Popconfirm } from 'antd';
+import { Table, Icon, Divider, Popconfirm, Tag } from 'antd';
 import { formatter } from '../utils/priceFormatter';
 
 const { Column} = Table
@@ -36,9 +36,19 @@ const ProductTable = ({
         title="Título"
         dataIndex="product.title"
         width="50%"
-        sorter={(a, b) => (a.title < b.title ? -1 : a.title > b.title ? 1 : 0)}
+        sorter={(a, b) =>
+          a.product.title < b.product.title
+            ? -1
+            : a.product.title > b.title
+            ? 1
+            : 0
+        }
         render={(text, record) => (
-          <a href={record.link} target="_blank" rel="noopener noreferrer">
+          <a
+            href={record.product.link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {text}
           </a>
         )}
@@ -46,7 +56,7 @@ const ProductTable = ({
       <Column
         title="Precio"
         dataIndex="product.price"
-        sorter={(a, b) => a.price - b.price}
+        sorter={(a, b) => a.product.price - b.product.price}
         render={text => formatter.format(text)}
       />
       <Column
@@ -57,7 +67,9 @@ const ProductTable = ({
       />
       <Column
         title="Diferencia"
-        sorter={(a, b) => a.product.price - a.desiredPrice - (b.product.price - b.desiredPrice)}
+        sorter={(a, b) =>
+          a.product.price - a.desiredPrice - (b.product.price - b.desiredPrice)
+        }
         render={(text, record) => {
           const difference = record.product.price - record.desiredPrice;
           const negativeIcon = (
@@ -74,7 +86,11 @@ const ProductTable = ({
           );
         }}
       />
-      <Column title="Tienda" dataIndex="product.store" />
+      <Column
+        title="Tienda"
+        dataIndex="product.store"
+        render={store => <Tag color="blue">{store}</Tag>}
+      />
       <Column
         title="Action"
         key="action"

@@ -1,11 +1,8 @@
-import React from 'react';
-import { List, Icon, Skeleton, Typography, Avatar } from 'antd';
-import { formatter } from '../utils/priceFormatter';
+import React from "react";
+import { List, Icon, Skeleton, Typography, Avatar, Tag } from "antd";
+import { formatter } from "../utils/priceFormatter";
 
-const PurchasedProductsList = ({
-  loading,
-  list,
-}) => {
+const PurchasedProductsList = ({ loading, list }) => {
   return (
     <List
       loading={loading}
@@ -13,6 +10,8 @@ const PurchasedProductsList = ({
       itemLayout="vertical"
       dataSource={list}
       renderItem={item => {
+        const src =
+          item.product.image || require("../assets/img/No-image-found.jpg");
         const difference = item.initialPrice - item.purchasedAt;
         const negativeIcon = (
           <Icon type="caret-down" style={{ color: "#eb2f96" }} />
@@ -21,8 +20,7 @@ const PurchasedProductsList = ({
           <Icon type="caret-up" style={{ color: "#52c41a" }} />
         );
         return (
-          <List.Item
-          >
+          <List.Item>
             <Skeleton avatar title={false} loading={item.loading} active>
               <List.Item.Meta
                 title={
@@ -41,13 +39,14 @@ const PurchasedProductsList = ({
                       <br />
                       Precio inicial: {formatter.format(item.initialPrice)}
                     </Typography.Paragraph>
+                    <Tag color="blue">{item.product.store}</Tag>
                   </>
                 }
                 avatar={
                   <Avatar
                     shape="square"
                     size="large"
-                    src={item.product.image}
+                    src={src}
                     alt={item.product.title}
                   />
                 }

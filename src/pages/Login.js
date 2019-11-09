@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Typography, Avatar, message } from "antd";
+import { Typography, Avatar, message, Alert } from "antd";
 import { Form, Icon, Input, Button } from "antd";
 import { Link } from "@reach/router";
 import { useAuth } from "../context/auth-context";
@@ -58,6 +58,10 @@ const Login = function({ form }) {
           <Title style={{ textAlign: "center" }} level={3}>
             Iniciar sesión
           </Title>
+          <Alert style={{marginBottom: 16}} description={`
+              Actualmente el servidor de hotmail.com está bloqueando el envío de correos. 
+              Si quieres recibir las notificaciones actualiza tu correo por uno de Gmail mientras se resuelve este problema.
+            `} type="warning" showIcon />
           <Form onSubmit={handleSubmit} className="login-form">
             <Form.Item>
               {getFieldDecorator("email", {

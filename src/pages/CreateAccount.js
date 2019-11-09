@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Avatar, Typography, Form, Input, Icon, Button } from "antd";
+import { Avatar, Typography, Form, Input, Icon, Button, Alert } from "antd";
 import { Link } from "@reach/router";
 import "./Login.css";
 import ErrorMessage from "../components/ErrorMessage";
@@ -51,9 +51,23 @@ const CreateAccount = ({ form }) => {
             <Title level={2}>Pricer</Title>
           </div>
           <Title style={{ textAlign: "center" }} level={3}>
-            Iniciar sesión
+            Crear cuenta
           </Title>
+          <Alert
+            style={{ marginBottom: 16 }}
+            description={`
+              Actualmente el servidor de hotmail.com está bloqueando el envío de correos. 
+              Si quieres recibir las notificaciones actualiza tu correo por uno de Gmail mientras se resuelve este problema.
+            `}
+            type="warning"
+            showIcon
+          />
           <Form onSubmit={handleSubmit} className="login-form">
+            <Form.Item>
+              {getFieldDecorator("name", {
+                rules: [{ required: true, message: "Introduce tu nombre" }]
+              })(<Input placeholder="Nombre" />)}
+            </Form.Item>
             <Form.Item>
               {getFieldDecorator("email", {
                 rules: [
@@ -90,11 +104,6 @@ const CreateAccount = ({ form }) => {
                   placeholder="Contraseña"
                 />
               )}
-            </Form.Item>
-            <Form.Item>
-              {getFieldDecorator("name", {
-                rules: [{ required: true, message: "Introduce tu nombre" }]
-              })(<Input placeholder="Nombre" />)}
             </Form.Item>
             <Form.Item>
               <Button

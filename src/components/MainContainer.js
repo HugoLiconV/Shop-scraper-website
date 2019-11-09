@@ -21,7 +21,11 @@ const MainContainer = props => {
       </div>
       <Layout.Footer className="footer">
         <Link to="/about">Acerca de</Link>
-        <SentryButton message="[user feedback]" title="Reportar problema" tags={['user feedback']}/>
+        <SentryButton
+          message="[user feedback]"
+          title="Reportar problema"
+          tags={["user feedback"]}
+        />
       </Layout.Footer>
     </Layout>
   );

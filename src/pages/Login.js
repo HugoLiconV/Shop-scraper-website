@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Typography, Avatar, message } from "antd";
+import { Typography, Avatar, message, Alert } from "antd";
 import { Form, Icon, Input, Button } from "antd";
 import { Link } from "@reach/router";
 import { useAuth } from "../context/auth-context";
@@ -9,19 +9,12 @@ import HCenter from "../components/Layouts/HCenter";
 import ErrorBoundary from "./ErrorBoundary";
 
 const { Title } = Typography;
-const loadCreateAccount = () => import("../pages/CreateAccount");
 
 const Login = function({ form }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const { login } = useAuth();
   const { getFieldDecorator } = form;
-
-  React.useEffect(() => {
-    // pre-load the authenticated side in the background while the user's
-    // filling out the login form.
-    loadCreateAccount();
-  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -65,6 +58,10 @@ const Login = function({ form }) {
           <Title style={{ textAlign: "center" }} level={3}>
             Iniciar sesión
           </Title>
+          <Alert style={{marginBottom: 16}} description={`
+              Actualmente el servidor de hotmail.com está bloqueando el envío de correos. 
+              Si quieres recibir las notificaciones actualiza tu correo por uno de Gmail mientras se resuelve este problema.
+            `} type="warning" showIcon />
           <Form onSubmit={handleSubmit} className="login-form">
             <Form.Item>
               {getFieldDecorator("email", {
@@ -119,6 +116,9 @@ const Login = function({ form }) {
               {/* Load create account component only if needed */}
               <HCenter>
                 <Link to="/create-account">Crear Cuenta</Link>
+              </HCenter>
+              <HCenter>
+                <Link to="/forgot-password">Olvide contraseña</Link>
               </HCenter>
             </Form.Item>
             <ErrorMessage error={error} />

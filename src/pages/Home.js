@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Col, Row, message } from "antd";
+import { Typography, Col, Row, message, Alert } from "antd";
 import CardContainer from "../components/CardContainer";
 import SearchProduct from "../components/SearchProduct";
 import ProductResult from "../components/ProductResult";
@@ -52,6 +52,10 @@ const Home = ({ user }) => {
         <Col sm={24} lg={{ span: 10, offset: 7 }}>
           <CardContainer>
             <Typography.Title level={1}>Pricer</Typography.Title>
+            <Alert style={{marginBottom: 16}} description={`
+              Actualmente el servidor de hotmail.com está bloqueando el envío de correos. 
+              Si quieres recibir las notificaciones actualiza tu correo por uno de Gmail mientras se resuelve este problema.
+            `} type="warning" showIcon />
             <Typography.Paragraph>
               Pricer te permite recibir alertas cuando un producto baja de
               precio por un valor que tu estableciste. Actualmente tiene soporte

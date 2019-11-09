@@ -73,7 +73,7 @@ const ProductList = ({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {item.product.title}
+                    {item.product.title}{' '}[Visitar producto]
                   </a>
                 }
                 description={

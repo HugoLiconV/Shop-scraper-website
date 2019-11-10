@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Typography, Avatar, message, Alert } from "antd";
+import { Typography, Avatar, Alert } from "antd";
 import { Form, Icon, Input, Button } from "antd";
 import { Link } from "@reach/router";
 import { useAuth } from "../context/auth-context";
@@ -27,9 +27,8 @@ const Login = function({ form }) {
         }).catch(e => {
           setLoading(false);
           if (e && e.response && e.response.status === 401) {
-            message.error("Datos incorrectos. Vuelve a intentarlo");
+            setError({ message: "Usuario o contraseña incorrecta" });
           } else {
-            message.error("Error en el servidor. Vuelve a intentarlo luego.");
             setError(e);
           }
         });

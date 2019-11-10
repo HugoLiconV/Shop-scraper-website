@@ -25,7 +25,11 @@ const CreateAccount = ({ form }) => {
           password,
           name
         }).catch(e => {
-          setError(e.message);
+          if (e && e.response && e.response.status === 409) {
+            setError({ message: "El correo ya fue previamente registrado" });
+          } else {
+            setError(e);
+          }
         });
         setLoading(false);
       }

@@ -28,32 +28,19 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-151663973-3"
+    ></script>
     <script>
-      // Your web app's Firebase configuration
-      var firebaseConfig = {
-        apiKey: "AIzaSyA4Q_NMJ_Rrzt3SCg59jWDvVsJdhly3zIM",
-        authDomain: "shop-scraper.firebaseapp.com",
-        databaseURL: "https://shop-scraper.firebaseio.com",
-        projectId: "shop-scraper",
-        storageBucket: "shop-scraper.appspot.com",
-        messagingSenderId: "82534279578",
-        appId: "1:82534279578:web:091722b18311f48aa23223"
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-151663973-3");
     </script>
   </body>
 </html>

@@ -29,6 +29,9 @@ const SearchProduct = ({ form, onSearch, loading }) => {
     if (link.includes("www.liverpool.com.mx")) {
       return "liverpool";
     }
+    if (link.includes("mercadolibre.com")) {
+      return "mercadolibre";
+    }
     if (link.includes("www.sears.com.mx")) {
       return "sears";
     }

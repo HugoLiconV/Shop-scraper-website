@@ -7,12 +7,15 @@ import * as serviceWorker from "./serviceWorker";
 import AppProviders from "./context";
 import dayjs from "dayjs";
 import * as Sentry from "@sentry/browser";
+import { BrowserTracing } from "@sentry/tracing";
 import "dayjs/locale/es"; // load on demand
 
 dayjs.locale("es"); // use Spanish locale globally
+
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DNS,
-  environment: process.env.NODE_ENV
+  integrations: [new BrowserTracing()],
+  tracesSampleRate: 1.0
 });
 
 if (process.env.NODE_ENV !== "production") {

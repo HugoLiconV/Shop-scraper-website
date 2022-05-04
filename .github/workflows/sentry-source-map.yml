@@ -13,14 +13,14 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Dependencies
         run: yarn
-      - name: Echo REACT_APP_SENTRY_RELEASE
-        run: echo $REACT_APP_SENTRY_RELEASE
       - name: Build Project
         env: # Or as an environment variable
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
           REACT_APP_MASTER_KEY: ${{ secrets.REACT_APP_MASTER_KEY }}
           REACT_APP_SENTRY_DNS: ${{ secrets.REACT_APP_SENTRY_DNS }}
         run: yarn build
+      - name: Echo REACT_APP_SENTRY_RELEASE
+        run: echo $REACT_APP_SENTRY_RELEASE
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
@@ -37,4 +37,4 @@ jobs:
         with:
           environment: production
           sourcemaps: "./build/static/js"
-          version: "1.0.0"
+          version: ${{ env.REACT_APP_SENTRY_RELEASE }}

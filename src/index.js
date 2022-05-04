@@ -15,7 +15,11 @@ dayjs.locale("es"); // use Spanish locale globally
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DNS,
   integrations: [new BrowserTracing()],
-  tracesSampleRate: 1.0
+  tracesSampleRate: 1.0,
+  release: process.env.REACT_APP_SENTRY_RELEASE
+});
+console.log("🚀 ~ file: index.js ~ line 20 ~ REACT_APP_SENTRY_RELEASE", {
+  REACT_APP_SENTRY_RELEASE: process.env.REACT_APP_SENTRY_RELEASE
 });
 
 if (process.env.NODE_ENV !== "production") {

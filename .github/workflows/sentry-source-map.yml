@@ -19,8 +19,6 @@ jobs:
           REACT_APP_MASTER_KEY: ${{ secrets.REACT_APP_MASTER_KEY }}
           REACT_APP_SENTRY_DNS: ${{ secrets.REACT_APP_SENTRY_DNS }}
         run: yarn build
-      - name: Echo REACT_APP_SENTRY_RELEASE
-        run: echo $REACT_APP_SENTRY_RELEASE
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
@@ -37,4 +35,4 @@ jobs:
         with:
           environment: production
           sourcemaps: "./build/static/js"
-          version: ${{ env.REACT_APP_SENTRY_RELEASE }}
+          # version: ${{ env.REACT_APP_SENTRY_RELEASE }}
